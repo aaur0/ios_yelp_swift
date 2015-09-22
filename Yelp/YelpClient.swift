@@ -34,7 +34,7 @@ class YelpClient: BDBOAuth1RequestOperationManager {
         return Static.instance!
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -63,14 +63,14 @@ class YelpClient: BDBOAuth1RequestOperationManager {
         }
         
         if categories != nil && categories!.count > 0 {
-            parameters["category_filter"] = ",".join(categories!)
+            parameters["category_filter"] = categories?.joinWithSeparator(",")
         }
         
         if deals != nil {
             parameters["deals_filter"] = deals!
         }
         
-        println(parameters)
+        print(parameters)
         
         return self.GET("search", parameters: parameters, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
             var dictionaries = response["businesses"] as? [NSDictionary]
